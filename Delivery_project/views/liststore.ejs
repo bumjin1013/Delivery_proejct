@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="../public/semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="semantic/semantic.js"></script>
+       <style>
+            body{padding:1rem;}
+        </style>
+
+		<meta charset="UTF-8">
+		<title>가게 리스트</title>
+	</head>
+    <body>
+        <h2>가게 리스트</h2>
+        
+        <form method="get" action="/process/userorderlist">
+            <input type="submit" class="ui button" value="주문 내역 보기">
+        </form>
+        
+        <div>
+            <% for (var i = 0; i < owners.length; i++){
+                var storeName = owners[i]._doc.store_name;
+                var storeImg = owners[i]._doc.store_img; %>
+
+                <form method="get" action="/process/userview">
+                    <div class="ui divider"></div>                       
+                        <input type="hidden" name="storename" value = "<%= storeName %>"/> 
+                        <input type = "IMAGE" class="ui middle aligned tiny image" src="<%= storeImg %>" name="storename" value="<%= storeName %> "/>
+                        <span><%= storeName %></span> 
+                </form>
+            <% } %> 
+        </div>
+        
+    </body>
+</html>

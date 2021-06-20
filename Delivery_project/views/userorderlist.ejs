@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <link rel="stylesheet" type="text/css" href="../public/semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="../public/semantic/semantic.js"></script>
+        <style>
+            body{padding:1rem;}
+        </style>
+        <style type="text/css">
+            .my-box { border:1px solid lightgray; padding:10px; }
+        </style>
+</head>
+
+<body>
+	<h1><%= results._doc.id %>의 주문내역</h1>
+    <form>
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="first">주문내역</a>
+            </div>
+            
+            <div class="ui bottom attached tab segment active" data-tab="first">
+                  <div>
+                      <%  
+                      for (var i = 0; i < results._doc.order.length; i++) {
+                          var store_name = results._doc.order[i].store_name;
+                          var menu_list = results._doc.order[i].menu_list;
+                          var address = results._doc.order[i].address;
+                          var phonenum = results._doc.order[i].phonenum;
+                          var forOwner = results._doc.order[i].forOwner;
+                          var forRider = results._doc.order[i].forRider;
+                          var final_price = results._doc.order[i].final_price;
+                          var timestamp = results._doc.order[i].timestamp;
+                        %>
+        
+                   
+                      
+                      
+                    <div class="my-box">
+  
+                    <p style="font-size:18px;"><strong><%=store_name%></strong></p>
+                    <p></p>
+                    <strong>주문일시</strong> : <%=timestamp%><p></p>
+                      <div class="ui divider"></div>
+                    <strong>주문메뉴</strong> <p></p>
+                    <%=menu_list%>
+                    <div class="ui divider"></div>
+                    <strong>총 결제금액</strong> : <%=final_price%>원
+
+                    <div class="ui divider"></div>
+                    <strong>배달주소</strong><p></p>
+                    <%=address%>
+                        
+                    <div class="ui divider"></div>
+                    <strong>가게 사장님께</strong><p></p>
+                    <%=forOwner%>
+                    
+                    
+                        
+                    <div class="ui divider"></div>
+                    <strong>라이더님께</strong><p></p>
+                    <%=forRider%>
+                      
+                      </div>
+                      <p></p>
+                      <p></p>
+                
+                      <% } %> 
+                      
+                      
+                </div>
+            </div>
+        </form>
+    
+   
+      <script>
+          
+          $('.menu .item')
+              .tab()
+          ;
+    
+    </script>
+ 
+    </body>
+</html>

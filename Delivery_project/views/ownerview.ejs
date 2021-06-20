@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <link rel="stylesheet" type="text/css" href="../public/semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="../public/semantic/semantic.js"></script>
+        <style>
+            body{padding:1rem;}
+        </style>
+          <style type="text/css">
+            .my-box { border:1px solid lightgray; padding:10px; }
+        </style>
+          <script>
+            function btn(){ 
+                alert('리뷰를 등록했습니다.');
+            }
+        </script>
+	</head>
+<body>
+	<h1><%= results._doc.store_name %></h1>
+  
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="first">메뉴</a>
+            <a class="item" data-tab="second" onclick="javascript:relayout()">정보</a>
+            <a class="item" data-tab="third" >리뷰</a>
+            <a class="item" data-tab="fourth">주문내역</a>
+            </div>
+            
+            <div class="ui bottom attached tab segment active" data-tab="first">
+                
+                
+                <form method="post" action="deletemenu" >
+                    <input type="hidden" value="<%=menu_name%>" name="menu_name">
+                    <input type="submit" value="선택삭제" class="ui button"> &nbsp;&nbsp; <a href='/public/addmenu.html' class="ui button">메뉴 추가</a> &nbsp;&nbsp;
+                
+                  <div>
+                      <%  
+                      for (var i = 0; i < results._doc.menu.length; i++) {
+                          var menu_name = results._doc.menu[i].menu_name;
+                          var price = results._doc.menu[i].price;
+                          var menu_img = results._doc.menu[i].menu_img;
+                        %>
+                      <div class="ui divider"></div>  
+                      <div class="ui form">
+                        <div class="grouped fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="menu_name" value="<%=menu_name%>">
+                                    <label> 
+                                    <div style="padding:px; width: 150; height: 100;">
+                                            <img class="ui middle aligned tiny image" src= "<%= menu_img %>">
+                                                <span><%= menu_name %></span>
+                                                <span><%= price %>원</span>
+                                        </div>
+                                    </label>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <% } %>       
+                </div>
+                </form>
+            </div>
+    
+            <div class="ui bottom attached tab segment" data-tab="second">
+                <div id="map" style="width:100%;height:350px;"  ></div> 
+                <%= results._doc.info;%>
+            </div>
+            
+            <div class="ui bottom attached tab segment" data-tab="third">
+                
+                
+                 <div class="my-box">
+                        
+                        
+                         <%  
+                            for (var a = 0; a< results._doc.review.length; a++) {
+                            var writer = results._doc.review[a].writer;
+                            var contents = results._doc.review[a].contents;
+                            var comment = results._doc.review[a].comment;
+                            var star = results._doc.review[a].star;
+                            var timestamp = results._doc.review[a].timestamp;
+                        %>
+
+                        <div class="ui message">
+                        <div class="header">
+                            작성자 :  <%=writer %> <div class="ui star rating" data-rating="<%=star%>" data-max-rating="5" name="star"></div>
+                            </div>
+                            <p><%=contents%></p>
+                            
+                            <p>작성일 : <%=timestamp%></p>
+                        </div>
+                       
+                     
+                        <%}%>
+                    </div>
+                
+                
+
+            </div>
+    
+            <div class="ui bottom attached tab segment" data-tab="fourth">
+                  <div>
+                      <%  
+                      for (var i = 0; i < results._doc.order.length; i++) {
+                          var user_id = results._doc.order[i].orderID;
+                          var menu_list = results._doc.order[i].menu_list;
+                          var address = results._doc.order[i].address;
+                          var phonenum = results._doc.order[i].phonenum;
+                          var forOwner = results._doc.order[i].forOwner;
+                          var forRider = results._doc.order[i].forRider;
+                          var final_price = results._doc.order[i].final_price;
+                          var timestamp = results._doc.order[i].timestamp;
+                        %>
+        
+                   
+                      
+                      
+                    <div class="my-box">
+  
+                    <p style="font-size:18px;"><strong>주문 아이디 : <%=user_id%></strong></p>
+                    <p></p>
+                    <strong>주문일시</strong> : <%=timestamp%><p></p>
+                        
+                    <div class="ui divider"></div>
+                    <strong>주문메뉴</strong> <p></p>
+                    <%=menu_list%>
+                        
+                    <div class="ui divider"></div>
+                    <strong>총 결제금액</strong> : <%=final_price%>원
+
+                    <div class="ui divider"></div>
+                    <strong>배달주소</strong><p></p>
+                    <%=address%>
+                        
+                    <div class="ui divider"></div>
+                    <strong>전화번호</strong><p></p>
+                    0<%=phonenum%>
+                        
+                    <div class="ui divider"></div>
+                    <strong>가게 사장님께</strong><p></p>
+                    <%=forOwner%>
+                    
+                    <div class="ui divider"></div>
+                    <strong>라이더님께</strong><p></p>
+                    <%=forRider%>
+                      
+                    </div>
+                      <p></p>
+                      <p></p>
+                
+                      <% } %> 
+                      
+                      
+                </div>
+    </div>
+        
+    
+   
+      <script>
+          
+          $('.menu .item')
+              .tab()
+          ;
+          
+          $('.ui.rating')
+  .rating()
+;
+    
+    </script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594830bb8ae51defb24ce150c0b53f82"></script>
+    <script>
+        
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                mapOption = { 
+                    center: new kakao.maps.LatLng(<%=results._doc.latitude%>, <%=results._doc.hardness%> ), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        
+
+            // 마커가 표시될 위치입니다 
+            var markerPosition  = new kakao.maps.LatLng(<%=results._doc.latitude%>, <%=results._doc.hardness%>); 
+
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+
+            // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+            // marker.setMap(null);    
+        function relayout() {    
+    
+    // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
+    // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다 
+    // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
+    map.relayout();
+}
+        
+        </script>
+ 
+    </body>
+</html>

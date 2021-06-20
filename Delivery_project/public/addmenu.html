@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <link rel="stylesheet" type="text/css" href="semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="semantic/semantic.js"></script>
+        <script>
+            function btn(){ 
+                alert('메뉴 추가 성공');
+            }
+        </script>
+        <style>
+            body{padding:1rem;}
+        </style>
+
+		<meta charset="UTF-8">
+		<title>메뉴 추가</title>
+	</head>
+<body>
+	<h1>메뉴 추가하기</h1>
+	<br>
+
+<form method="post" action="/process/addmenu" class="ui form" target="ifrm">
+    <div class="field">
+        <label>메뉴명</label>
+        <input type="text" name="menu_name" placeholder="메뉴명">
+    </div>
+    <div class="field">
+        <label>가격</label>
+        <input type="text" name="price" placeholder="가격">
+    </div>
+    <div class="field">
+        <label>메뉴 사진</label>
+        <input type="text" name="menu_img" placeholder="메뉴 사진">
+    </div>
+    
+  <button class="ui button" type="submit" onclick="javascript:btn()">추가하기</button>
+</form>
+    <iframe name='ifrm' width='0' height='0' frameborder='0'></iframe>
+</body>
+</html>

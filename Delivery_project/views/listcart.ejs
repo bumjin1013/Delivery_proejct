@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <link rel="stylesheet" type="text/css" href="../public/semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="../public/semantic/semantic.js"></script>
+        <script>
+            function btn(){ 
+                alert('장바구니를 비웠습니다.');
+                location.reload(true);
+            }
+        </script>
+        <style>
+            body{padding:1rem;}
+            
+            .right{
+                float: right;
+                }
+        </style>
+	</head>
+<body>
+	<h1><%= incart._doc.id %>의 장바구니</h1>
+    
+     <div class="column">
+            <div class="ui top attached tabular menu">
+                <div class="active item">장바구니</div>
+                </div>
+            <div class="ui bottom attached active tab segment">
+                <p></p>
+                
+                <%  
+                    var total_price = 0;
+                      for (var i = 0; i < incart._doc.cart.length; i++) {
+                        
+                        var store_name = incart._doc.cart[i].store_name;
+                        var menu_name = incart._doc.cart[i].menu_name;
+                        var price = incart._doc.cart[i].price;
+                        var num = incart._doc.cart[i].num;
+                        total_price += price*num
+                     
+                        var total_menu = menu_name
+                        %>
+                <div class="ui list">
+                    <div class="item"><%=menu_name%> - <%=price%>원    <%=num%>개</div>
+                </div>
+                        
+                <%}%>
+                <p></p>
+                <p></p>
+                
+                <div class="ui divider"></div>
+                
+                총 가격 : <%= total_price%> 원
+                
+                <p></p>
+                
+                <form method="post" action="/process/deletecart" target="ifrm">
+                    <input type="submit" value="장바구니 비우기" class="ui button" name="" onclick="javascript:btn()" onclick="window.location.reload();"/>
+                </form>
+                <iframe name='ifrm' width='0' height='0' frameborder='0'></iframe>
+                
+                <form method="post" action="/process/order">
+                    <input type="submit" class="ui button" value="주문하기" name=""/>
+                </form>
+                
+                </div>
+            <p></p>
+        </div>
+
+</body>
+   
+</html>
+

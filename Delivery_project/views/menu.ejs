@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <link rel="stylesheet" type="text/css" href="semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="semantic/semantic.js"></script>
+        <script>
+        
+            
+            
+        </script>
+        <style>
+            body{padding:1rem;}
+        </style>
+	</head>
+<body>
+	<h1>분식집</h1>
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="first">메뉴</a>
+            <a class="item" data-tab="second">정보</a>
+            <a class="item" data-tab="third">리뷰</a>
+            </div>
+            
+            <div class="ui bottom attached tab segment active" data-tab="first">
+                  <div>
+                      <%  
+                for (var i = 0; i < menus._doc.menu.length; i++) {
+                    var menu_name = menus._doc.menu[i].menu_name;
+                    var price = menus._doc.menu[i].price;
+                    var menu_img = menus._doc.menu[i].menu_img;
+                    %>
+        
+                <div class="ui divider"></div>
+                    <div style="padding:px; width: 150; height: 100;">
+                        <img class="ui middle aligned tiny image" src= "<%= menu_img %>">
+                    <span><%= menu_name %></span>
+                    <span><%= price %>원</span>
+                </div>
+            <% } %> 
+        </div>
+               </div>
+            <div class="ui bottom attached tab segment" data-tab="second">
+                Second
+            </div>
+            
+            <div class="ui bottom attached tab segment" data-tab="third">
+                Third
+            </div>
+      <script>
+          
+          $('.menu .item')
+              .tab()
+          ;
+
+          
+    </script>
+ 
+    </body>
+</html>

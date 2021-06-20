@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="../public/semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="semantic/semantic.js"></script>
+        <style>
+            body{padding:1rem;}
+        
+        </style>
+       
+
+		<meta charset="UTF-8">
+        
+		<title>주문</title>
+	</head>
+    <body>
+        <h1>주문</h1>
+        
+        <form method="post" action="/process/ordersuccess">
+        <p style="font-size:18px;">
+            <strong>배달정보</strong></p>
+        <div class="ui form">
+            <div class="field">
+                <label>주소</label>
+                <input type="text" name="address">
+            </div>
+        </div>
+        <p></p>
+        <div class="ui form">
+            <div class="field">
+                <label>전화번호</label>
+                <input type="text" name="phonenum">
+            </div>
+        </div>
+        <div class="ui hidden divider"></div>
+        <p style="font-size:18px;"><strong>요청사항</strong></p>
+        <p></p>
+         <div class="ui form">
+            <div class="field">
+                <label>가게 사장님께</label>
+                <input type="text" name="forOwner" placeholder="예) 견과류 빼주세요, 덜 맵게 해주세요">
+            </div>
+        </div>
+
+        
+        <div class="field">
+            <p></p>
+            <strong>라이더님께</strong>
+            <div class="fields">
+                <div class="field">
+                    <select class="ui fluid search dropdown" name="forRider">
+                        <option value="조심히 안전하게 와주세요 :)">조심히 안전하게 와주세요 :)</option>
+                        <option value="문앞에 두고 벨 눌러주세요">문앞에 두고 벨 눌러주세요</option>
+                        <option value="벨 누르지 말고 노크해주세요">벨 누르지 말고 노크해주세요</option>
+                        <option value="도착하기 전에 전화주세요">도착하기 전에 전화주세요</option>
+                        <option value="요청사항 없음">요청사항 없음</option>
+                        
+                
+                    </select>
+                </div>        
+            </div>
+            
+        <div class="ui divider"></div>
+        
+          <%  
+            var total_price = 0;
+            var tip = 2000;
+            var final_price =0;
+            var menu_list = '';
+
+            for (var i = 0; i < results._doc.cart.length; i++) {
+                        
+            var store_name = results._doc.cart[i].store_name;
+            var menu_name = results._doc.cart[i].menu_name;
+            var price = results._doc.cart[i].price;
+            var num = results._doc.cart[i].num;
+            total_price += price*num;
+            menu_list += menu_name+'-'+num+'개\n'
+            %>
+            
+            
+        <%}%>
+        
+            <strong>결제금액</strong>
+        <p></p>
+        주문금액 : <%=total_price%>
+        <p></p>
+        배달팁 : <%=tip%>
+        <p></p>
+
+        <% final_price = total_price + tip%>
+        <div class="ui divider"></div>
+        총 결제금액 : <%=final_price%> 원
+        </div>
+        
+        
+        <input type="hidden" value="<%=final_price%>" name="final_price">
+        <input type="hidden" value="<%=store_name%>" name="store_name">
+        <input type="hidden" value="<%=menu_list%>" name="menu_list">
+        <input type="submit" class="ui button" value="주문하기">
+                                        
+        </form>
+        
+    </body>
+    <script>
+        $('.ui.dropdown')
+            .dropdown()
+        ;
+       
+    </script>
+    
+</html>

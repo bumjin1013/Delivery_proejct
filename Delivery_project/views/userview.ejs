@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <link rel="stylesheet" type="text/css" href="../public/semantic/semantic.css">
+        <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+        <script src="../public/semantic/semantic.js"></script>
+        <script>
+            
+             
+            
+            function btn(){ alert('장바구니에 담았습니다.'); }
+            function review(){ alert('리뷰를 등록했습니다.'); }
+            
+        </script>
+       
+        
+        
+        
+        <style type="text/css">
+            .my-box { border:1px solid lightgray; padding:10px; }
+        </style>
+        <style>
+            body{padding:1rem;}
+            
+            .right{
+                float: right;
+                }
+        </style>
+	</head>
+<body>
+	<h1><%= results._doc.store_name %></h1>
+
+    <div class="ui segment">
+    <div class="ui two column very relaxed grid">
+        
+    <div class="column">
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="first">메뉴</a>
+            <a class="item" data-tab="second" onclick="javascript:relayout()">정보</a>
+            <a class="item" data-tab="third">리뷰</a>
+            </div>
+            
+            <div class="ui bottom attached tab segment active" data-tab="first">
+                <div>
+                  <%  
+                      for (var i = 0; i < results._doc.menu.length; i++) {
+                        var menu_name = results._doc.menu[i].menu_name;
+                        var price = results._doc.menu[i].price;
+                        var menu_img = results._doc.menu[i].menu_img;
+                     
+                        %>
+            
+                        <div class="ui divider"></div>
+                            <div style="padding:px; width: auto; height: auto;">
+                            <img class="ui middle aligned tiny image" src= "<%= menu_img %>">
+                                <span><%= menu_name %></span>
+                                <span><%= price %> 원</span>
+                                
+                                <form method="post" action="/process/addcart" target="ifrm">
+                                   
+                                    <select class="ui search dropdown" name="num">
+                                        <option value="">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                 
+                                
+                                    <input type="hidden" value ="<%= results._doc.store_name %>" name="store_name">
+                                    <input type="hidden" value ="<%= menu_name %>" name="menu_name">
+                                    <input type="hidden" value ="<%= price %>" name="price">
+                                    <input type="submit" value ="담기" class="ui button" class ="right" onclick="javascript:btn()" class="cart arrow down icon">
+                                  
+                                    
+                                </form>
+                                <iframe name='ifrm' width='0' height='0' frameborder='0'></iframe>
+
+                            </div>
+                      <% } %> 
+                </div>
+            </div>
+    
+            <div class="ui bottom attached tab segment" data-tab="second">
+                 
+                <div id="map" style="width:100%;height:350px;"  ></div> 
+                <%= results._doc.info;%>
+            </div>
+            
+            <div class="ui bottom attached tab segment" data-tab="third">
+                
+                      <form method="post" action="review">
+                        <div class="ui fluid action input">
+                        
+                    
+                            <label>별점</label>
+                        <% for(var star=1; star<6; star++){
+                        %>
+                        
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="star" checked="checked" value="<%=star%>">
+                                        <label><%= star%></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          <% }%>
+                            
+
+
+                        <p></p>  
+                            
+                       
+                        
+                        <input type="text" placeholder="리뷰를 작성해주세요" name="contents">
+                        <input type="hidden" value="<%=results.store_name%>" name="store_name">
+                        <input type="submit" class="ui button" name="등록" action="javascript:review()">
+                            
+                        </div>
+                        <p></p>
+                        <p></p>
+                    
+                        
+                    </form>
+                    
+                    <div class="my-box">
+                        
+                        <%
+                            for (var i = 0; i< results._doc.review.length; i++) {
+                            var writer = results._doc.review[i].writer;
+                            var contents = results._doc.review[i].contents;
+                            var comment = results._doc.review[i].comment;
+                            var star = results._doc.review[i].star;
+                            var timestamp = results._doc.review[i].timestamp;
+                                
+                         
+                        %>
+                        
+                        
+                        
+                        <div class="ui message">
+                        <div class="header">
+                            작성자 :  <%=writer %> <div class="ui star rating" data-rating="<%=star%>" data-max-rating="5" name="star"></div>
+                            </div>
+                            <p><%=contents%></p>
+                            
+                            <p>작성일 : <%=timestamp%></p>
+                        </div>
+                       
+                     
+                        <%}%>
+                    </div>
+            </div>
+        
+        
+        </div>
+ 
+        <div class="column">
+            <div class="ui top attached tabular menu">
+                <div class="active item">장바구니</div>
+                </div>
+            <div class="ui bottom attached active tab segment">
+                <p></p>
+                
+                <form method="get" action="/process/listcart">
+                    <input type="submit" class="ui button"value ="장바구니 확인하기">
+                </form>
+                    
+                </div>
+                <p></p>
+            </div>
+        </div>
+        </div>
+  
+    <script>
+          
+          $('.menu .item')
+              .tab()
+          ;
+        $('.ui.dropdown')
+            .dropdown()
+        ;
+           $('.ui.rating')
+  .rating()
+;
+
+    </script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=594830bb8ae51defb24ce150c0b53f82"></script>
+    <script>
+        
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                mapOption = { 
+                    center: new kakao.maps.LatLng(<%=results._doc.latitude%>, <%=results._doc.hardness%> ), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        
+
+            // 마커가 표시될 위치입니다 
+            var markerPosition  = new kakao.maps.LatLng(<%=results._doc.latitude%>, <%=results._doc.hardness%>); 
+
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+
+            // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+            // marker.setMap(null);    
+        function relayout() {    
+    
+    // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
+    // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다 
+    // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
+    map.relayout();
+}
+        
+        </script>
+    </body>
+   
+</html>
+
